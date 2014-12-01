@@ -1,71 +1,61 @@
 import pygame
 import random
   
-# Define some colors
+# Definition de quelques couleurs
 BLACK    = (   0,   0,   0)
 WHITE    = ( 255, 255, 255)
 RED      = ( 255,   0,   0)
 
-# Set the height and width of the screen
+# Hauteur et largeur de l'ecran
 screen_width = 700
 screen_height = 400
  
 class Ball(pygame.sprite.Sprite):
     """
-    This class represents the ball        
-    It derives from the "Sprite" class in Pygame
+    Cette classe represente la balle (qui est en fait un rectangle).
     """
     def __init__(self, color, width, height):
-        """ Constructor. Pass in the color of the block, 
-        and its x and y position. """
-        # Call the parent class (Sprite) constructor
+        """ Ici, on construit une balle definie par une couleurs,
+        une hauteur et une largeur """
+        # Appelle le parent pour construit une "sprite"
         super(Ball, self).__init__() 
-  
-        # Create an image of the block, and fill it with a color.
-        # This could also be an image loaded from the disk.
+ 
+        # On definit un rectangle avec une couleur ici
         self.image = pygame.Surface([width, height])
         self.image.fill(color)
   
-        # Fetch the rectangle object that has the dimensions of the image
-        # image.
-        # Update the position of this object by setting the values 
-        # of rect.x and rect.y
         self.rect = self.image.get_rect()
          
     def update(self):
-        """ Called each frame. """
- 
-        # Move block down one pixel
+        """ Mise à jour de l'ecran """
+
+        # Deplace la balle vers le bas
         self.rect.y += 10
-         
-        # If block is too far down, reset to top of screen.
+        
+        # Si la basse sort de l'ecran, on la remet en haut
         if self.rect.y > screen_height:
             self.rect.y = 0
  
-# Initialize Pygame
+# Initialisation
 pygame.init()
   
 screen = pygame.display.set_mode([screen_width, screen_height])
   
-#block_list = pygame.sprite.Group()
-  
 ball = Ball(BLACK, 20, 15)
   
-# Set a random location for the block
+# On met la balle sur un emplacement au hasard
 ball.rect.x = random.randrange(screen_width)
 ball.rect.y = random.randrange(screen_height)
 allsprites = pygame.sprite.RenderPlain(ball)
-      
-#Loop until the user clicks the close button.
+
 done = False
   
-# Used to manage how fast the screen updates
 clock = pygame.time.Clock()
   
-# -------- Main Program Loop -----------
+# Tout le travail est fait ici
 while not done:
     for event in pygame.event.get(): 
-        # If user clicked close
+        # Quand on clique sur "exit", le programme s'arrête
         if event.type == pygame.QUIT: 
             done = True 
   
@@ -73,10 +63,10 @@ while not done:
     ball.update()
     allsprites.draw(screen)
       
-    # Limit to 20 frames per second
+    # 20 frames par second
     clock.tick(20)
   
-    # Go ahead and update the screen with what we've drawn.
+    # Mise à jour de l'ecran
     pygame.display.flip()
   
 pygame.quit()
