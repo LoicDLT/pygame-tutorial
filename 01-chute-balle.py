@@ -45,6 +45,7 @@ while not done:
         y_pos = 0
 
     # Dessine le rectangle
+    #---- A MODIFIER -----#
     pygame.draw.rect(screen, BLACK, [x_pos, y_pos, 50, 30])
     # Mise a jour de l'ecran
     pygame.display.flip()
