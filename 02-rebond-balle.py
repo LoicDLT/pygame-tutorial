@@ -26,6 +26,9 @@ clock = pygame.time.Clock()
 
 rect_width = 50
 rect_height = 30
+
+# Vitesse de la balle
+#---- A MODIFIER -----#
 speed_x = 0
 speed_y = 10
 
@@ -44,6 +47,7 @@ while not done:
     x_pos += speed_x
     
     # Rebond en hauteur
+    #---- A MODIFIER -----#
     if y_pos < 0 or y_pos + rect_height > screen_height:
         speed_y = - speed_y
 
