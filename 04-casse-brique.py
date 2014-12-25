@@ -1,5 +1,5 @@
 import pygame
-import sys
+import numpy as np
 
 # Definition de quelques couleurs
 BLACK    = (   0,   0,   0)
@@ -33,6 +33,13 @@ class GameState:
         surf = self.font.render("Score: "+str(self.score), False, BLACK, WHITE)
         screen.blit(surf, (x, y))
 
+def dist_corner_left(ball, paddle):
+    return np.sqrt((ball.x - paddle.x)**2 + (ball.y - paddle.y)**2)
+
+def dist_corner_right(ball, paddle):
+    return np.sqrt((ball.x - (paddle.x + paddle.width))**2 
+            + (ball.y - paddle.y)**2)
+
 
 class Ball(pygame.Rect):
     def __init__(self, x=screen_width/2, y=screen_height/2, radius=10, speed_x=0,
@@ -62,8 +69,17 @@ class Ball(pygame.Rect):
 
         if self.x + self.radius >= screen_width  or self.x <= self.radius:
             self.speed_x = -self.speed_x
-    
+   
+
+
     def bounce_paddle(self):
+        dist = self.radius + 3
+        if dist_corner_right(self, paddle) < dist or dist_corner_left(self, paddle) < dist:
+            self.speed_y = - self.speed_y
+            self.speed_x = - self.speed_y
+            self.y = paddle.y - 2*self.radius
+            return
+
         if self.colliderect(paddle):
             self.y = paddle.y - 2*self.radius
             self.bounce()
@@ -131,7 +147,7 @@ class Wall:
         offsetX = 10
         offsetY = 10
 
-        brick_width = screen_width - (self.nbX+1)*offsetX# - state.width)
+        brick_width = screen_width - (self.nbX+1)*offsetX #- state.width
         brick_width /= self.nbX
         brick_height = 0.3*screen_height / self.nbY
         
